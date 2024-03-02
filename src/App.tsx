@@ -1,26 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './styles.css';
+import MainPage from "./week1/MainPage";
+import {createGlobalStyle} from "styled-components";
+import reset from "styled-reset";
+
+const GlobalStyle = createGlobalStyle`
+    ${reset}
+`;
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <div className="App">
+            <GlobalStyle/>
+            <MainPage/>
+        </div>
+    );
 }
 
 export default App;
