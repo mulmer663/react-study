@@ -31,33 +31,45 @@ const SMainPage
 const bottomButtons = [1, 2, 3, 4, 5];
 const historyButtons = ['', '', '', ''];
 
-const pushHistoryArr = (currentVal: number, historyArr : string[]) => {
+const pushHistoryArr = (currentVal: number, historyArr: string[]) => {
     historyArr.shift()
     historyArr.push(currentVal.toString())
     return historyArr;
+}
+
+const checkValid = (num: number) => {
+    return (num >= 0 && num < 100);
 }
 
 const MainPage = () => {
     const [currentVal, setCurrentVal] = useState(0);
     const [selectedVal, setSelectedVal] = useState(1);
     const [historyArr, setHistoryArr] = useState(historyButtons);
+    const [isValid, setIsValid] = useState(true);
 
     const handleChangeSelectedVal = (val: string) => setSelectedVal(parseInt(val))
     const handleChangeCurrentVal = (isPlus: boolean) => {
-        setHistoryArr(pushHistoryArr(currentVal, historyArr));
-        if (isPlus) {
-            setCurrentVal(currentVal + selectedVal)
-        } else {
-            setCurrentVal(currentVal - selectedVal)
+        // 유효 검사 부터한다
+        let valid = checkValid(isPlus ? currentVal + selectedVal : currentVal - selectedVal);
+        setIsValid(valid)
+
+        // 유효하다면 상태를 업데이트한다
+        if (valid) {
+            if (isPlus) {
+                setHistoryArr(pushHistoryArr(currentVal + selectedVal, historyArr));
+                setCurrentVal(currentVal + selectedVal)
+            } else {
+                setHistoryArr(pushHistoryArr(currentVal - selectedVal, historyArr));
+                setCurrentVal(currentVal - selectedVal)
+            }
         }
     }
-
-    const clearHistoryArr = () => setHistoryArr(historyArr.fill(''))
+    const clearHistoryArr = () => setHistoryArr(Array(historyArr.length).fill(''))
 
     return (
         <SMainPage>
             <HistoryArea gridProps={"H"} historyArr={historyArr} onClick={clearHistoryArr}/>
-            <MainText gridProps={"M"} value={currentVal.toString()}/>
+            <MainText gridProps={"M"} value={currentVal.toString()} isValid={isValid}/>
             <GridButton gridProps={"BP"} value={"+"} onClick={() => handleChangeCurrentVal(true)}/>
             <GridButton gridProps={"BM"} value={"-"} onClick={() => handleChangeCurrentVal(false)}/>
             <BottomButtonArea gridProps={"B"} bottomButtons={bottomButtons} onClick={handleChangeSelectedVal}
