@@ -7,7 +7,7 @@ interface gridButtonProps extends commonProps {
 }
 
 const SLongButton = styled.button<gridProps>`
-    grid-area: ${(props) => props.gridProps};
+    grid-area: ${(props) => props.$gridProps};
     ${commonStyles};
     font-size: 40px;
     &:hover {
@@ -19,9 +19,9 @@ const SLongButton = styled.button<gridProps>`
         background-color: #009900; // 클릭 중일 때의 배경색
     }
 `;
-const GridButton = ({gridProps, value, onClick}: gridButtonProps) => {
+const GridButton = ({$gridProps, value, onClick}: gridButtonProps) => {
     return (
-        <SLongButton gridProps={gridProps} onClick={onClick}>{value}</SLongButton>
+        <SLongButton $gridProps={$gridProps} onClick={onClick}>{value}</SLongButton>
     );
 }
 

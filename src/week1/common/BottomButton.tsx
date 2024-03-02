@@ -8,17 +8,17 @@ interface clickButtonProps extends props {
 }
 
 interface sClickButtonProps {
-    isSelect: boolean;
+    $isSelect: boolean;
     onClick?: () => void;
 }
 
 export const SClickButton = styled.button<sClickButtonProps>`
     ${commonStyles};
-    background-color: ${(props) => (props.isSelect ? "#009900" : "#444444")};
-    color: ${(props) => (props.isSelect ? "white" : "#00CC00")};
+    background-color: ${(props) => (props.$isSelect ? "#009900" : "#444444")};
+    color: ${(props) => (props.$isSelect ? "white" : "#00CC00")};
 
     &:hover {
-        background-color: ${(props) => (props.isSelect ? "#007700" : "#66FF00")}
+        background-color: ${(props) => (props.$isSelect ? "#007700" : "#66FF00")}
     }
 
     &:active {
@@ -29,7 +29,7 @@ export const SClickButton = styled.button<sClickButtonProps>`
 
 const BottomButton = ({value, isSelect, onClick}: clickButtonProps) => {
     return (
-        <SClickButton type="button" onClick={() => onClick(value)} isSelect={isSelect}>
+        <SClickButton type="button" onClick={() => onClick(value)} $isSelect={isSelect}>
             {value}
         </SClickButton>
     );

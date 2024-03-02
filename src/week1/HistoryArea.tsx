@@ -11,7 +11,7 @@ interface historyProps extends gridProps {
 }
 
 const SHistoryArea = styled.div<gridProps>`
-    grid-area: ${(props) => props.gridProps};
+    grid-area: ${(props) => props.$gridProps};
     display: flex;
     flex-direction: column-reverse;
     flex-wrap: nowrap;
@@ -19,15 +19,15 @@ const SHistoryArea = styled.div<gridProps>`
     gap: 12px;
 `;
 
-const HistoryArea = ({ gridProps, historyArr, onClick }: historyProps) => {
+const HistoryArea = ({ $gridProps, historyArr, onClick }: historyProps) => {
 
     return (
-        <SHistoryArea gridProps={gridProps}>
-            <SClickButton isSelect={false} onClick={onClick}>
+        <SHistoryArea $gridProps={$gridProps}>
+            <SClickButton $isSelect={false} onClick={onClick}>
                 <AiOutlineDelete size="45" color="#00CC00" />
             </SClickButton>
-            {historyArr.map((history) => (
-                <Button value={history}></Button>
+            {historyArr.map((history, index) => (
+                <Button key={index} value={history}></Button>
             ))}
         </SHistoryArea>
     );

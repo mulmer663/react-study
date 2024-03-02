@@ -11,18 +11,18 @@ interface bottomButtonAreaProps extends gridProps {
 }
 
 const SBottomButtonArea = styled.div<gridProps>`
-    grid-area: ${(props) => props.gridProps};
+    grid-area: ${(props) => props.$gridProps};
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     gap: 12px;
     justify-content: space-between;
 `;
-const BottomButtonArea = ({gridProps, bottomButtons, selectedVal, onClick}: bottomButtonAreaProps) => {
+const BottomButtonArea = ({$gridProps, bottomButtons, selectedVal, onClick}: bottomButtonAreaProps) => {
     return (
-        <SBottomButtonArea gridProps={gridProps}>
-            {bottomButtons.map((val) => (
-                <BottomButton value={val.toString()} onClick={onClick} isSelect={val === selectedVal}/>
+        <SBottomButtonArea $gridProps={$gridProps}>
+            {bottomButtons.map((val, index) => (
+                <BottomButton key={index} value={val.toString()} onClick={onClick} isSelect={val === selectedVal}/>
             ))}
         </SBottomButtonArea>
     );

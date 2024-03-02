@@ -5,7 +5,7 @@ export interface props {
 }
 
 export interface gridProps {
-    gridProps?: string,
+    $gridProps?: string,
 }
 
 export interface commonProps extends gridProps, props {

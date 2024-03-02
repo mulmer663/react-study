@@ -8,11 +8,11 @@ interface mainTextProps extends commonProps {
 }
 
 interface sValidDivProps {
-    isValid: boolean;
+    $isValid: boolean;
 }
 
 const SMainText = styled.div<gridProps>`
-    grid-area: ${(props) => props.gridProps};
+    grid-area: ${(props) => props.$gridProps};
     ${commonStyles};
     justify-content: center;
     text-align: center;
@@ -37,13 +37,13 @@ const SValidDiv = styled.div<sValidDivProps>`
     align-items: center;
     font-size: 14px;
     font-weight: 400;
-    visibility: ${(props) => props.isValid ? "hidden" : "visible"};
+    visibility: ${(props) => props.$isValid ? "hidden" : "visible"};
 `;
 
-const MainText = ({gridProps, value, isValid}: mainTextProps) => {
+const MainText = ({$gridProps, value, isValid}: mainTextProps) => {
     return (
-        <SMainText gridProps={gridProps}>
-            <SValidDiv isValid={isValid}>
+        <SMainText $gridProps={$gridProps}>
+            <SValidDiv $isValid={isValid}>
                 <BsExclamationCircleFill size="24"/>&nbsp;&nbsp;숫자의 범위는 0~99까지 입니다.
             </SValidDiv>
             {value}

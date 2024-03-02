@@ -64,15 +64,18 @@ const MainPage = () => {
             }
         }
     }
-    const clearHistoryArr = () => setHistoryArr(Array(historyArr.length).fill(''))
+    const clearHistoryArr = () => {
+        setCurrentVal(0);
+        setHistoryArr(Array(historyArr.length).fill(''))
+    }
 
     return (
         <SMainPage>
-            <HistoryArea gridProps={"H"} historyArr={historyArr} onClick={clearHistoryArr}/>
-            <MainText gridProps={"M"} value={currentVal.toString()} isValid={isValid}/>
-            <GridButton gridProps={"BP"} value={"+"} onClick={() => handleChangeCurrentVal(true)}/>
-            <GridButton gridProps={"BM"} value={"-"} onClick={() => handleChangeCurrentVal(false)}/>
-            <BottomButtonArea gridProps={"B"} bottomButtons={bottomButtons} onClick={handleChangeSelectedVal}
+            <HistoryArea $gridProps={"H"} historyArr={historyArr} onClick={clearHistoryArr}/>
+            <MainText $gridProps={"M"} value={currentVal.toString()} isValid={isValid}/>
+            <GridButton $gridProps={"BP"} value={"+"} onClick={() => handleChangeCurrentVal(true)}/>
+            <GridButton $gridProps={"BM"} value={"-"} onClick={() => handleChangeCurrentVal(false)}/>
+            <BottomButtonArea $gridProps={"B"} bottomButtons={bottomButtons} onClick={handleChangeSelectedVal}
                               selectedVal={selectedVal}/>
         </SMainPage>
     );
