@@ -20,6 +20,8 @@ const PageArea = ({ $gridArea}: gridArea) => {
             <PageButton $isCurrentPage={false} pageNum={1}></PageButton>
             <PageButton $isCurrentPage={false} pageNum={2}></PageButton>
             <PageButton $isCurrentPage={false} pageNum={3}></PageButton>
+            <PageButton $isCurrentPage={false} pageNum={4}></PageButton>
+            <PageButton $isCurrentPage={false} pageNum={5}></PageButton>
         </SPageArea>
     );
 }
