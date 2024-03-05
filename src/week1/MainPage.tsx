@@ -50,7 +50,7 @@ const MainPage = () => {
     const handleChangeSelectedVal = (val: string) => setSelectedVal(parseInt(val))
     const handleChangeCurrentVal = (isPlus: boolean) => {
         // 유효 검사 부터한다
-        let valid = checkValid(isPlus ? currentVal + selectedVal : currentVal - selectedVal);
+        const valid = checkValid(isPlus ? currentVal + selectedVal : currentVal - selectedVal);
         setIsValid(valid)
 
         // 유효하다면 상태를 업데이트한다
