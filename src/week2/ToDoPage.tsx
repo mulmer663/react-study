@@ -1,4 +1,4 @@
-import React from "react";
+import React, {createContext} from "react";
 import styled from "styled-components";
 import {inAndOutTheme} from "./common/CommonStyle";
 import HeadBar from "./area/HeadBar";
@@ -6,6 +6,9 @@ import InputArea from "./area/InputArea";
 import TabArea from "./area/TabArea";
 import PageArea from "./area/PageArea";
 import MainArea from "./area/MainArea";
+
+const focusContext = createContext(-1);
+const pageContext = createContext(1);
 
 const SToDoPage = styled.div`
     ${inAndOutTheme};

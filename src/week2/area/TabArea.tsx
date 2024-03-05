@@ -19,6 +19,9 @@ const STabButton = styled.button`
     background-color: #2a2d3c;
     color: #ffffff;
     border: 1px solid #2a2d3c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 25px;
     flex-basis: 33%;
     

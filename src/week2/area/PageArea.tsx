@@ -7,7 +7,7 @@ import PageButton from "../component/PageButton";
 const SPageArea = styled.div<gridArea>`
     grid-area: ${(props) => props.$gridArea};
     ${mainTheme};
-    border-radius: 12px;
+    border-radius: 8px;
     display: flex;
     flex-direction: row;
     align-items: center;

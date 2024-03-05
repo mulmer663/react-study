@@ -1,4 +1,4 @@
-import {css} from "styled-components";
+import styled, {css} from "styled-components";
 
 export const titleFont = css`
     font-family: 'GmarketSansMedium',sans-serif;
@@ -19,7 +19,7 @@ export const mainTheme = css`
     background-color: #2a2d3c;
     color: #ffffff;
     border: 1px solid #2a2d3c;
-    border-radius: 15px;
+    border-radius: 10px;
 `;
 
 export const inAndOutTheme = css`
@@ -31,12 +31,23 @@ export const hoverTheme = css`
     background-color: #7c7e93 ;
     color: #ffffff;
     border: 1px solid #7c7e93;
-    border-radius: 15px;
+    border-radius: 10px;
 `;
 
 export const highLightTheme = css`
     background-color: #56657c;
     color: #ffffff;
     border: 1px solid #56657c;
-    border-radius: 15px;
+    border-radius: 10px;
+`;
+
+interface direction {
+    direction: string
+}
+
+export const SFlexBox = styled.div<direction>`
+    display: flex;
+    flex-direction: ${(props) => props.direction};
+    align-items: center;
+    justify-content: space-between;
 `;

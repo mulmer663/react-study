@@ -13,7 +13,7 @@ const SMainArea = styled.div<gridArea>`
     align-content: center;
     justify-content: space-between;
     gap: 10px;
-    padding: 25px;
+    padding: 20px;
 `;
 
 const MainArea = ({$gridArea}:gridArea) => {
