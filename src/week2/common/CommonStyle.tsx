@@ -1,5 +1,12 @@
 import styled, {css} from "styled-components";
 
+
+export const flexAlign = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
 export const titleFont = css`
     font-family: 'GmarketSansMedium',sans-serif;
     font-weight: bold;

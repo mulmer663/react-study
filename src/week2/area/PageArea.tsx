@@ -1,17 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import {mainTheme} from "../common/CommonStyle";
+import {flexAlign, mainTheme} from "../common/CommonStyle";
 import {gridArea} from "../common/CommonProps";
 import PageButton from "../component/PageButton";
 
 const SPageArea = styled.div<gridArea>`
     grid-area: ${(props) => props.$gridArea};
     ${mainTheme};
+    ${flexAlign};
     border-radius: 8px;
-    display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
     margin-bottom: 5px;
     gap: 12px;
 `;

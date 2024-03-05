@@ -28,8 +28,8 @@ const SInput = styled.input.attrs({type: "checkbox"})`
 
 const SCheckBox_Icon = styled.span`
     display: inline-block;
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     background-color: #fcebda;
     border: 1px solid #fcebda;
     position: relative;
@@ -51,14 +51,14 @@ const SCheckBox_Icon = styled.span`
     // 가상요소 before
     &:before {
         top: 11px; // 위치값 top
-        left: 2px; // 위치값 left
+        left: 1px; // 위치값 left
         transform: rotate(-45deg); // 회전값
     }
 
     // 가상요소 after 
     &:after {
         top: 18px; // 위치값 top
-        left: 9px; // 위치값 left
+        left: 8px; // 위치값 left
         transform: rotate(-135deg); // 회전값
     }
 `;

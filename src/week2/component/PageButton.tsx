@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {highLightTheme, mainFont} from "../common/CommonStyle";
+import {flexAlign, highLightTheme, mainFont} from "../common/CommonStyle";
 import {value} from "../common/CommonProps";
 
 
@@ -20,9 +20,7 @@ const SPageButton = styled.button<SPageButtonProps>`
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    ${flexAlign};
 
     &:hover {
         background-color: #7c7e93 ;

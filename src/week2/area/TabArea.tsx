@@ -1,7 +1,7 @@
 import React from "react";
 import styled, {css} from "styled-components";
 import {gridArea} from "../common/CommonProps";
-import {highLightTheme, hoverTheme, inAndOutTheme, mainTheme, titleFont} from "../common/CommonStyle";
+import {flexAlign, highLightTheme, hoverTheme, inAndOutTheme, mainTheme, titleFont} from "../common/CommonStyle";
 
 const STabArea = styled.div<gridArea>`
     ${inAndOutTheme};
@@ -19,9 +19,7 @@ const STabButton = styled.button`
     background-color: #2a2d3c;
     color: #ffffff;
     border: 1px solid #2a2d3c;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    ${flexAlign};
     font-size: 25px;
     flex-basis: 33%;
     

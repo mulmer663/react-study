@@ -1,7 +1,8 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import {inAndOutTheme, mainFont, mainTheme, SFlexBox} from "../common/CommonStyle";
+import {flexAlign, inAndOutTheme, mainFont, mainTheme, SFlexBox} from "../common/CommonStyle";
 import CheckBox from "./Checkbox";
+import {FaXmark} from "react-icons/fa6";
 
 interface SToDoProps {
     $isFocus: boolean,
@@ -55,15 +56,31 @@ const SText = styled.div<STextProps>`
     padding-left: 20px;
 `;
 
-const SFlexBox2 = styled(SFlexBox)`
+const SDateGroup = styled(SFlexBox)`
     justify-content: start;
+`;
+
+const SButtonGroup = styled(SFlexBox)`
+    gap: 5px;
 `;
 
 const SDiv = styled.div`
     ${inAndOutTheme};
     ${mainFont};
     width: 50%;
+    padding-left: 20px;
     text-align: left;
+    font-size: 15px;
+    color: #7e7e84;
+`;
+
+const SXMark = styled.div`
+    width: 22px;
+    height: 22px;
+    background-color: #424652;
+    border: 1px solid #424652;
+    border-radius: 3px;
+    ${flexAlign};
 `;
 
 const makeCurrentDate = () => {
@@ -87,16 +104,16 @@ const ToDo = ({giveText, $isFocus, $color, $isFinish, endDate}: ToDoProps) => {
             <SFlexBox direction={"row"}>
                 <SColorBar $color={color}/>
                 <SText $isFinish={$isFinish}>{text}</SText>
-                <SFlexBox direction={"column"}>
+                <SButtonGroup direction={"column"}>
                     <CheckBox/>
-                    <button>X</button>
-                </SFlexBox>
+                    <SXMark><FaXmark size="20" color="#1b1f2b"/></SXMark>
+                </SButtonGroup>
             </SFlexBox>
             {/* 포커스면 시작일 완료일 표시 */}
-            {$isFocus &&  <SFlexBox2 direction={"row"}>
+            {$isFocus &&  <SDateGroup direction={"row"}>
                 <SDiv>입력일: {startDate}</SDiv>
                 <SDiv>완료일: {endDate ? endDate : "-"}</SDiv>
-            </SFlexBox2>}
+            </SDateGroup>}
         </SToDo>
     );
 }
