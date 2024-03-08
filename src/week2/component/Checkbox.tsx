@@ -35,6 +35,7 @@ const SCheckBox_Icon = styled.span`
     position: relative;
     cursor: pointer;
     border-radius: 3px;
+    transition: background-color 0.3s;
 
     // 체크박스 가상요소
 

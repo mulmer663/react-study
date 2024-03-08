@@ -9,10 +9,16 @@ const SInputArea = styled.div<gridArea>`
     margin-bottom: 15px;
 `;
 
+const STextarea = styled.input`
+    width: 300px;
+    height: 60px;
+    font-size: 25px;
+`;
+
 const InputArea = ({$gridArea} : gridArea) => {
     return (
         <SInputArea $gridArea={$gridArea}>
-
+            <STextarea/>
         </SInputArea>
     );
 }

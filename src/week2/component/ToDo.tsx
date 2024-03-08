@@ -3,6 +3,7 @@ import styled from "styled-components";
 import {flexAlign, inAndOutTheme, mainFont, mainTheme, SFlexBox} from "../common/CommonStyle";
 import CheckBox from "./Checkbox";
 import {FaXmark} from "react-icons/fa6";
+import ColorPalette from "./ColorPalette";
 
 interface SToDoProps {
     $isFocus: boolean,
@@ -31,7 +32,7 @@ const SToDo = styled.div<SToDoProps>`
     ${inAndOutTheme};
     border: ${(props) => props.$isFocus ? "1px solid #7c7e93" : "1px solid #1b1f2b"};
     border-radius: 12px;
-    height: ${(props) => props.$isFocus ? "100px" : "55px"};
+    height: ${(props) => props.$isFocus ? "110px" : "55px"};
     display: flex;
     flex-direction: column;
     align-content: center;
@@ -100,7 +101,7 @@ const ToDo = ({giveText, $isFocus, $color, $isFinish, endDate}: ToDoProps) => {
     return (
         <SToDo $isFocus={$isFocus}>
             {/* 포커스면 컬러 팔레트 표시 */}
-            {$isFocus && <div>colorPallte</div>}
+            {$isFocus && <ColorPalette/>}
             <SFlexBox direction={"row"}>
                 <SColorBar $color={color}/>
                 <SText $isFinish={$isFinish}>{text}</SText>
