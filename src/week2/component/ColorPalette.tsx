@@ -14,21 +14,26 @@ const COLOR_LIST = [
 
 interface SColorProps {
     $color: string,
-    $isSelected: boolean
+    $isSelected: boolean,
+    $boxShadowColor?: string
 }
 
-interface ColorPaletteProps {
+interface SColorPaletteProps {
+    $paddingLeft?: string
+}
+
+interface ColorPaletteProps extends SColorPaletteProps {
     givenIndex?: number
+    $boxShadowColor?: string
 }
 
-
-const SColorPalette = styled.div`
+const SColorPalette = styled.div<SColorPaletteProps>`
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: start;
     height: 24px;
-    padding-left: 20px;
+    padding-left: ${(props) => props.$paddingLeft ?? "20px"};
     gap: 7px;
 `;
 
@@ -37,32 +42,33 @@ const SColor = styled.div<SColorProps>`
     width: ${(props) => props.$isSelected ? "20px" : "16px"};
     height: ${(props) => props.$isSelected ? "20px" : "16px"};
     border-radius: 50%;
-    box-shadow: ${(props) => props.$isSelected ? "0 0 0 1px #d9d9d9" : "0 0 0 0"};
+    box-shadow: ${(props) => props.$isSelected ? `0 0 0 1px ${props.$boxShadowColor ?? "#ffffff"}` : "0 0 0 0"};
     transition: width 0.3s, height 0.3s, box-shadow 0.2s;
 
     ${SColorPalette}:hover &:hover {
-        box-shadow: ${(props) => props.$isSelected ? "0 0 0 2px #d9d9d9" : "0 0 0 0"};
+        box-shadow: ${(props) => props.$isSelected ? `0 0 0 2px ${props.$boxShadowColor ?? "#ffffff"}` : "0 0 0 0"};
         width: 24px;
         height: 24px;
     }
 
     ${SColorPalette}:hover &:not(:hover) {
-        box-shadow: ${(props) => props.$isSelected ? "0 0 0 2px #d9d9d9" : "0 0 0 0"};
+        box-shadow: ${(props) => props.$isSelected ? `0 0 0 2px ${props.$boxShadowColor ?? "#ffffff"}` : "0 0 0 0"};
         width: 20px;
         height: 20px;
     }
 
     ${SColorPalette}:hover &:active {
-        box-shadow: 0 0 0 2px #d9d9d9;
+        box-shadow: 0 0 0 2px ${(props) => props.$boxShadowColor ?? "#ffffff"};
     }
 `;
 
-const ColorPalette = ({givenIndex} : ColorPaletteProps) => {
+const ColorPalette = ({$paddingLeft, $boxShadowColor, givenIndex}: ColorPaletteProps) => {
     return (
-        <SColorPalette>
+        <SColorPalette $paddingLeft={$paddingLeft}>
             {COLOR_LIST.map((it, index) =>
                 <SColor key={index} $color={it.color}
-                        $isSelected={givenIndex ? (index == givenIndex) : it.isSelected}/>
+                        $isSelected={givenIndex ? (index == givenIndex) : it.isSelected}
+                        $boxShadowColor={$boxShadowColor}/>
             )}
         </SColorPalette>
     );

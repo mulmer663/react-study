@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import {flexAlign, highLightTheme, mainFont} from "../common/CommonStyle";
-import {value} from "../common/CommonProps";
 
 
 interface SPageButtonProps {

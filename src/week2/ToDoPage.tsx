@@ -18,7 +18,7 @@ const SToDoPage = styled.div`
     display: grid;
     justify-content: center;
     grid-template-columns: repeat(5, 100px);
-    grid-template-rows: 80px 120px 50px 40px minmax(50px, auto);
+    grid-template-rows: 80px 165px 50px 40px minmax(50px, auto);
     gap: 0;
     grid-template-areas: 
         "H H H H H"
