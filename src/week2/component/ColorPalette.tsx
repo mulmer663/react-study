@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
 const COLOR_LIST = [
@@ -23,8 +23,10 @@ interface SColorPaletteProps {
 }
 
 interface ColorPaletteProps extends SColorPaletteProps {
-    givenIndex?: number
     $boxShadowColor?: string
+    givenColor: string
+
+    onStateChange(list: { color: string, isSelected: boolean }[]): void
 }
 
 const SColorPalette = styled.div<SColorPaletteProps>`
@@ -62,13 +64,37 @@ const SColor = styled.div<SColorProps>`
     }
 `;
 
-const ColorPalette = ({$paddingLeft, $boxShadowColor, givenIndex}: ColorPaletteProps) => {
+/*
+* COLOR_LIST를 state로 가지고 있고
+* 클릭 이벤트시 리스트의 isSelected 값을 변경
+* 그리고 부모에게 상태 변경되었다고 함수를 호출함
+* */
+const ColorPalette = ({$paddingLeft, $boxShadowColor, onStateChange, givenColor}: ColorPaletteProps) => {
+    const [list, setList] = useState(COLOR_LIST);
+
+    const handleClickEvent = (index: number) => {
+        const newList = [...COLOR_LIST];
+        newList.forEach((it) => it.isSelected = false);
+        newList[index].isSelected = true;
+        setList(newList);
+        onStateChange(newList);
+    }
+
+    useEffect(() => {
+        const newList = [...COLOR_LIST];
+        newList.forEach((it) => it.isSelected = false);
+        newList.filter((it) => it.color === givenColor)[0].isSelected = true
+        setList(newList);
+    }, [givenColor]);
+
     return (
         <SColorPalette $paddingLeft={$paddingLeft}>
-            {COLOR_LIST.map((it, index) =>
-                <SColor key={index} $color={it.color}
-                        $isSelected={givenIndex ? (index == givenIndex) : it.isSelected}
-                        $boxShadowColor={$boxShadowColor}/>
+            {list.map((it, index) =>
+                <SColor key={index}
+                        $color={it.color}
+                        $isSelected={it.isSelected}
+                        $boxShadowColor={$boxShadowColor}
+                        onClick={() => handleClickEvent(index)}/>
             )}
         </SColorPalette>
     );

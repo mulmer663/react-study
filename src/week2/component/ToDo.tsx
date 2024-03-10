@@ -17,7 +17,7 @@ interface STextProps {
     $isFinish: boolean,
 }
 
-interface ToDoProps extends SToDoProps, SColorBarProps, STextProps {
+export interface ToDoProps extends SToDoProps, SColorBarProps, STextProps {
     giveText: string,
     endDate?: string
 }
@@ -93,18 +93,23 @@ const makeCurrentDate = () => {
     return `${year}-${month}-${day}`;
 }
 
-const ToDo = ({giveText, $isFocus, $color, $isFinish, endDate}: ToDoProps) => {
+const ToDo = ({$isFocus, $color, $isFinish, giveText, endDate}: ToDoProps) => {
     const [text, setText] = useState(giveText);
     const [color, setColor] = useState($color);
     const startDate = makeCurrentDate();
 
+    const handleColorByPaletteStateChange = (newList: {color: string, isSelected:boolean}[]) => {
+        const selectColor = newList.filter((it) => it.isSelected)[0].color;
+        setColor(selectColor);
+    }
+
     return (
         <SToDo $isFocus={$isFocus}>
             {/* 포커스면 컬러 팔레트 표시 */}
-            {$isFocus && <ColorPalette/>}
+            {$isFocus && <ColorPalette onStateChange={handleColorByPaletteStateChange} givenColor={color}/>}
             <SFlexBox direction={"row"}>
-                <SColorBar $color={color}/>
-                <SText $isFinish={$isFinish}>{text}</SText>
+                <SColorBar $color={$color}/>
+                <SText $isFinish={$isFinish}>{giveText}</SText>
                 <SButtonGroup direction={"column"}>
                     <CheckBox/>
                     <SXMark><FaXmark size="20" color="#1b1f2b"/></SXMark>

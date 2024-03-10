@@ -1,4 +1,4 @@
-import React, {createContext} from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import {inAndOutTheme} from "./common/CommonStyle";
 import HeadBar from "./area/HeadBar";
@@ -6,9 +6,8 @@ import InputArea from "./area/InputArea";
 import TabArea from "./area/TabArea";
 import PageArea from "./area/PageArea";
 import MainArea from "./area/MainArea";
-
-const focusContext = createContext(-1);
-const pageContext = createContext(1);
+import {ToDoProps} from "./component/ToDo";
+import {callbackify} from "node:util";
 
 const SToDoPage = styled.div`
     ${inAndOutTheme};
@@ -29,13 +28,29 @@ const SToDoPage = styled.div`
 `;
 
 const ToDoPage = () => {
+    const [todo, setTodo] = useState<ToDoProps>();
+
+    const makeToDoComponent = (text: string, color: string) => {
+        const newTodo: ToDoProps = {
+            giveText: text,
+            $color: color,
+            $isFocus: false,
+            $isFinish: false,
+        }
+
+        // 페이징 로직 처리
+
+        // MainArea에게 newTodo 전달하기
+        setTodo(newTodo);
+    }
+
     return (
         <SToDoPage>
             <HeadBar $gridArea={"H"}/>
-            <InputArea $gridArea={"I"}/>
+            <InputArea $gridArea={"I"} clickEventCallBack={makeToDoComponent}/>
             <TabArea $gridArea={"T"}/>
             <PageArea $gridArea={"P"}/>
-            <MainArea $gridArea={"M"}/>
+            <MainArea $gridArea={"M"} addTodo={todo}/>
         </SToDoPage>
     );
 }

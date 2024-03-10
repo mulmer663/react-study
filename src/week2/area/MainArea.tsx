@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import {gridArea} from "../common/CommonProps";
 import {mainTheme} from "../common/CommonStyle";
-import ToDo from "../component/ToDo";
+import ToDo, {ToDoProps} from "../component/ToDo";
 
 const SMainArea = styled.div<gridArea>`
     grid-area: ${(props) => (props.$gridArea)};
@@ -16,14 +16,27 @@ const SMainArea = styled.div<gridArea>`
     padding: 20px;
 `;
 
-const MainArea = ({$gridArea}:gridArea) => {
+interface mainAreaProps extends gridArea {
+    addTodo: ToDoProps | undefined
+}
+
+const MainArea = ({$gridArea, addTodo}: mainAreaProps) => {
+    const [todoList, setTodoList] = useState<ToDoProps[]>([]);
+
+    useEffect(() => {
+        if (addTodo) {
+            const newToDoLost = [...todoList];
+            newToDoLost.unshift(addTodo);
+            setTodoList(newToDoLost);
+        }
+    }, [addTodo]);
+
     return (
         <SMainArea $gridArea={$gridArea}>
-            <ToDo  $color={"#f29b76"} $isFinish={false} $isFocus={false} giveText={"리액트 공부하기"}></ToDo>
-            <ToDo  $color={"#cce198"} $isFinish={true} $isFocus={false} giveText={"스프링 공부하기"}></ToDo>
-            <ToDo  $color={"#7ecef4"} $isFinish={false} $isFocus={true} giveText={"운동하기"}></ToDo>
-            <ToDo  $color={"#8f82bc"} $isFinish={false} $isFocus={false} giveText={"독서하기"}></ToDo>
-            <ToDo  $color={"#facd89"} $isFinish={false} $isFocus={false} giveText={"자바스크립트 promiss 공부하기"}></ToDo>
+            {todoList.map((it, index) =>
+                <ToDo key={index} giveText={it.giveText} $isFocus={it.$isFocus} $color={it.$color}
+                      $isFinish={it.$isFinish}/>
+            )}
         </SMainArea>
     );
 }
