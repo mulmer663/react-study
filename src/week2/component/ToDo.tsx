@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-import {flexAlign, inAndOutTheme, mainFont, mainTheme, SFlexBox} from "../common/CommonStyle";
+import {flexAlign, inAndOutTheme, mainFont, SFlexBox} from "../common/CommonStyle";
 import CheckBox from "./Checkbox";
 import {FaXmark} from "react-icons/fa6";
 import ColorPalette from "./ColorPalette";
@@ -18,6 +18,7 @@ interface STextProps {
 }
 
 export interface ToDoProps extends SToDoProps, SColorBarProps, STextProps {
+    id: string
     giveText: string,
     endDate?: string
 }
@@ -93,20 +94,19 @@ const makeCurrentDate = () => {
     return `${year}-${month}-${day}`;
 }
 
+export interface ToDoProps extends SToDoProps, SColorBarProps, STextProps {
+    giveText: string,
+    endDate?: string
+}
+
 const ToDo = ({$isFocus, $color, $isFinish, giveText, endDate}: ToDoProps) => {
-    const [text, setText] = useState(giveText);
     const [color, setColor] = useState($color);
     const startDate = makeCurrentDate();
-
-    const handleColorByPaletteStateChange = (newList: {color: string, isSelected:boolean}[]) => {
-        const selectColor = newList.filter((it) => it.isSelected)[0].color;
-        setColor(selectColor);
-    }
 
     return (
         <SToDo $isFocus={$isFocus}>
             {/* 포커스면 컬러 팔레트 표시 */}
-            {$isFocus && <ColorPalette onStateChange={handleColorByPaletteStateChange} givenColor={color}/>}
+            {$isFocus && <ColorPalette givenColor={color} callback={setColor}/>}
             <SFlexBox direction={"row"}>
                 <SColorBar $color={$color}/>
                 <SText $isFinish={$isFinish}>{giveText}</SText>

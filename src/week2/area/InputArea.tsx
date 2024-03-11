@@ -1,8 +1,13 @@
-import React, {useRef, useState} from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import {gridArea} from "../common/CommonProps";
-import {flexAlign, highLightTheme, mainFont, SFlexBox} from "../common/CommonStyle";
+import {flexAlign, highLightTheme, mainFont} from "../common/CommonStyle";
 import ColorPalette from "../component/ColorPalette";
+import {useAppDispatch} from "../reducers/store";
+import {todoAdded} from "../reducers/todoReducer";
+import {ToDoProps} from "../component/ToDo";
+import { v4 } from 'uuid';
+
 
 const SInputArea = styled.div<gridArea>`
     grid-area: ${(props) => props.$gridArea};
@@ -68,10 +73,6 @@ const SWrap = styled.div`
     left: 205px;
 `;
 
-interface inputAreaProps extends gridArea {
-    clickEventCallBack(text: string, color: string): void
-}
-
 /*
 * 입력값과 색깔코드를 state로 가지고 있고
 * 입력값은 변할 때마다 랜더링 되게 이벤트 세팅
@@ -79,23 +80,24 @@ interface inputAreaProps extends gridArea {
 * 클릭 이벤트시 입력값, 색깔코드를 초기화 하고 부모에게 클릭이벤트가 일어났다고 clickEventCallBack 호출해 알림
 * 클릭이벤트시 ColorPalette의 List도 초기화 해주어야 하는데 어떻게?
 * */
-const InputArea = ({$gridArea, clickEventCallBack}: inputAreaProps) => {
+const InputArea = ({$gridArea}: gridArea) => {
     const [inputValue, setInputValue] = useState('');
     const [color, setColor] = useState('#f29b76');
+    const dispatch = useAppDispatch();
 
     const handleInputChange = (value: string) => {
         setInputValue(value);
     };
 
-    const handleColorByPaletteStateChange = (newList: { color: string, isSelected: boolean }[]) => {
-        const selectColor = newList.filter((it) => it.isSelected)[0].color;
-        setColor(selectColor);
-    }
-
     const _onClickEvent = (text: string, color: string) => {
-        // TODO : 텍스트 verify 기능 추가
-        clickEventCallBack(text, color);
-
+        const newTodo: ToDoProps = {
+            id: v4(),
+            giveText: text,
+            $color: color,
+            $isFocus: false,
+            $isFinish: false,
+        }
+        dispatch(todoAdded(newTodo))
         setInputValue('');
         setColor('#f29b76')
     }
@@ -108,7 +110,7 @@ const InputArea = ({$gridArea, clickEventCallBack}: inputAreaProps) => {
             <SAddButton onClick={() => _onClickEvent(inputValue, color)}>ADD</SAddButton>
             <SWrap>
                 <ColorPalette $paddingLeft={"0px"} $boxShadowColor={"#3d3d3d"} givenColor={color}
-                              onStateChange={handleColorByPaletteStateChange}/>
+                            callback={setColor}/>
             </SWrap>
         </SInputArea>
     );

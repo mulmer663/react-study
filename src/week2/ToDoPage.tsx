@@ -28,29 +28,13 @@ const SToDoPage = styled.div`
 `;
 
 const ToDoPage = () => {
-    const [todo, setTodo] = useState<ToDoProps>();
-
-    const makeToDoComponent = (text: string, color: string) => {
-        const newTodo: ToDoProps = {
-            giveText: text,
-            $color: color,
-            $isFocus: false,
-            $isFinish: false,
-        }
-
-        // 페이징 로직 처리
-
-        // MainArea에게 newTodo 전달하기
-        setTodo(newTodo);
-    }
-
     return (
         <SToDoPage>
             <HeadBar $gridArea={"H"}/>
-            <InputArea $gridArea={"I"} clickEventCallBack={makeToDoComponent}/>
+            <InputArea $gridArea={"I"}/>
             <TabArea $gridArea={"T"}/>
             <PageArea $gridArea={"P"}/>
-            <MainArea $gridArea={"M"} addTodo={todo}/>
+            <MainArea $gridArea={"M"}/>
         </SToDoPage>
     );
 }

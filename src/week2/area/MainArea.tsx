@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import {gridArea} from "../common/CommonProps";
 import {mainTheme} from "../common/CommonStyle";
-import ToDo, {ToDoProps} from "../component/ToDo";
+import ToDo from "../component/ToDo";
+import {useAppSelector} from "../reducers/store";
+import {selectTodoList} from "../reducers/todoReducer";
 
 const SMainArea = styled.div<gridArea>`
     grid-area: ${(props) => (props.$gridArea)};
@@ -16,26 +18,14 @@ const SMainArea = styled.div<gridArea>`
     padding: 20px;
 `;
 
-interface mainAreaProps extends gridArea {
-    addTodo: ToDoProps | undefined
-}
-
-const MainArea = ({$gridArea, addTodo}: mainAreaProps) => {
-    const [todoList, setTodoList] = useState<ToDoProps[]>([]);
-
-    useEffect(() => {
-        if (addTodo) {
-            const newToDoLost = [...todoList];
-            newToDoLost.unshift(addTodo);
-            setTodoList(newToDoLost);
-        }
-    }, [addTodo]);
+const MainArea = ({$gridArea}: gridArea) => {
+    const todoList = useAppSelector(selectTodoList);
 
     return (
         <SMainArea $gridArea={$gridArea}>
-            {todoList.map((it, index) =>
-                <ToDo key={index} giveText={it.giveText} $isFocus={it.$isFocus} $color={it.$color}
-                      $isFinish={it.$isFinish}/>
+            {todoList.map((it) =>
+                <ToDo key={it.id} giveText={it.giveText} $isFocus={it.$isFocus} $color={it.$color}
+                      $isFinish={it.$isFinish}  id={it.id}/>
             )}
         </SMainArea>
     );

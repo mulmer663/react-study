@@ -2,14 +2,14 @@ import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 
 const COLOR_LIST = [
-    {color: "#f29b76", isSelected: true},
-    {color: "#facd89", isSelected: false},
-    {color: "#cce198", isSelected: false},
-    {color: "#89c997", isSelected: false},
-    {color: "#7ecef4", isSelected: false},
-    {color: "#8f82bc", isSelected: false},
-    {color: "#c490bf", isSelected: false},
-    {color: "#f29c9f", isSelected: false},
+    {color: "#f29b76"},
+    {color: "#facd89"},
+    {color: "#cce198"},
+    {color: "#89c997"},
+    {color: "#7ecef4"},
+    {color: "#8f82bc"},
+    {color: "#c490bf"},
+    {color: "#f29c9f"},
 ]
 
 interface SColorProps {
@@ -20,13 +20,6 @@ interface SColorProps {
 
 interface SColorPaletteProps {
     $paddingLeft?: string
-}
-
-interface ColorPaletteProps extends SColorPaletteProps {
-    $boxShadowColor?: string
-    givenColor: string
-
-    onStateChange(list: { color: string, isSelected: boolean }[]): void
 }
 
 const SColorPalette = styled.div<SColorPaletteProps>`
@@ -64,37 +57,31 @@ const SColor = styled.div<SColorProps>`
     }
 `;
 
+interface ColorPaletteProps extends SColorPaletteProps {
+    $boxShadowColor?: string
+    givenColor: string
+
+    callback(color: string): void
+}
+
 /*
 * COLOR_LIST를 state로 가지고 있고
 * 클릭 이벤트시 리스트의 isSelected 값을 변경
 * 그리고 부모에게 상태 변경되었다고 함수를 호출함
 * */
-const ColorPalette = ({$paddingLeft, $boxShadowColor, onStateChange, givenColor}: ColorPaletteProps) => {
-    const [list, setList] = useState(COLOR_LIST);
-
-    const handleClickEvent = (index: number) => {
-        const newList = [...COLOR_LIST];
-        newList.forEach((it) => it.isSelected = false);
-        newList[index].isSelected = true;
-        setList(newList);
-        onStateChange(newList);
+const ColorPalette = ({$paddingLeft, $boxShadowColor, givenColor, callback}: ColorPaletteProps) => {
+    const handleClickEvent = (color: string) => {
+        callback(color);
     }
-
-    useEffect(() => {
-        const newList = [...COLOR_LIST];
-        newList.forEach((it) => it.isSelected = false);
-        newList.filter((it) => it.color === givenColor)[0].isSelected = true
-        setList(newList);
-    }, [givenColor]);
 
     return (
         <SColorPalette $paddingLeft={$paddingLeft}>
-            {list.map((it, index) =>
+            {COLOR_LIST.map((it, index) =>
                 <SColor key={index}
                         $color={it.color}
-                        $isSelected={it.isSelected}
+                        $isSelected={it.color === givenColor}
                         $boxShadowColor={$boxShadowColor}
-                        onClick={() => handleClickEvent(index)}/>
+                        onClick={() => handleClickEvent(it.color)}/>
             )}
         </SColorPalette>
     );
