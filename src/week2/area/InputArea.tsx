@@ -7,6 +7,7 @@ import {useAppDispatch} from "../reducers/store";
 import {todoAdded} from "../reducers/todoReducer";
 import {ToDoProps} from "../component/ToDo";
 import { v4 } from 'uuid';
+import {text} from "node:stream/consumers";
 
 
 const SInputArea = styled.div<gridArea>`
@@ -96,6 +97,7 @@ const InputArea = ({$gridArea}: gridArea) => {
             $color: color,
             $isFocus: false,
             $isFinish: false,
+            isDeleted: false,
         }
         dispatch(todoAdded(newTodo))
         setInputValue('');
@@ -106,7 +108,8 @@ const InputArea = ({$gridArea}: gridArea) => {
         <SInputArea $gridArea={$gridArea}>
             <STextarea maxLength={13} placeholder={"TODO 입력"} onChange={(e) => {
                 handleInputChange(e.target.value)
-            }} value={inputValue}/>
+            }} onKeyDown={(event) => (event.key === 'Enter')
+                && _onClickEvent(inputValue, color)} value={inputValue}/>
             <SAddButton onClick={() => _onClickEvent(inputValue, color)}>ADD</SAddButton>
             <SWrap>
                 <ColorPalette $paddingLeft={"0px"} $boxShadowColor={"#3d3d3d"} givenColor={color}

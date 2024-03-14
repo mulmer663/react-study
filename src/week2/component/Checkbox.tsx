@@ -64,11 +64,16 @@ const SCheckBox_Icon = styled.span`
     }
 `;
 
-const CheckBox = () => {
+interface CheckBoxProps {
+    eventCallBack() : void
+}
+
+const CheckBox = ({eventCallBack} : CheckBoxProps) => {
+
     return (
         <SLabel>
             <SInput type="checkbox"/>
-            <SCheckBox_Icon className="checkbox_icon"></SCheckBox_Icon>
+            <SCheckBox_Icon className="checkbox_icon" onClick={eventCallBack}/>
         </SLabel>
     );
 }

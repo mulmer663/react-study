@@ -25,7 +25,7 @@ const MainArea = ({$gridArea}: gridArea) => {
         <SMainArea $gridArea={$gridArea}>
             {todoList.map((it) =>
                 <ToDo key={it.id} giveText={it.giveText} $isFocus={it.$isFocus} $color={it.$color}
-                      $isFinish={it.$isFinish}  id={it.id}/>
+                      $isFinish={it.$isFinish} endDate={it.endDate} id={it.id} isDeleted={it.isDeleted}/>
             )}
         </SMainArea>
     );

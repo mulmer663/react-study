@@ -13,33 +13,37 @@ const todosSlice = createSlice({
         todoAdded(state, action) {
             state.todoList.unshift(action.payload)
         },
-        todoToggled(state, action) {
-            const todo = state.todoList.find(todo => todo.id === action.payload)
-            if (todo) {
-                todo.$isFinish = !todo.$isFinish;
-            }
+        todoToggled(state, action: PayloadAction<{ id: string, _endDate: string }>) {
+            state.todoList = state.todoList.map((todo) => {
+                return todo.id === action.payload.id
+                    ? {...todo, $isFinish: !todo.$isFinish, endDate: action.payload._endDate, isDeleted: false}
+                    : todo
+            })
         },
-        todoColorSelected: {
-            reducer: (state, action: PayloadAction<{id: string, $color: string}>) => {
-                const {id, $color} = action.payload
-                const todo = state.todoList.find(todo => todo.id === id)
-                if (todo) {
-                    todo.$color = $color;
-                }
-            },
-            prepare: (id: string, $color: string) => {
-                return {
-                    payload: {id: id, $color: $color}
-                };
-            }
+        todoFocus(state, action) {
+            state.todoList = state.todoList.map((todo) => {
+                return todo.id === action.payload
+                    ? {...todo, $isFocus: !todo.$isFocus, isDeleted: todo.isDeleted && !todo.$isFocus}
+                    : {...todo, $isFocus: false, isDeleted: false}
+            })
+        },
+        todoDeleteReady(state, action) {
+            state.todoList = state.todoList.map((todo) => {
+                return todo.id === action.payload
+                    ? {...todo, isDeleted: true}
+                    : todo
+            })
         },
         todoDeleted(state, action) {
-            delete state.todoList[action.payload]
+            state.todoList = state.todoList.filter(todo => todo.id !== action.payload);
         }
     }
 })
 
-export const {todoAdded, todoToggled, todoColorSelected, todoDeleted} = todosSlice.actions
+export const {
+    todoAdded, todoToggled, todoFocus,
+    todoDeleteReady, todoDeleted
+} = todosSlice.actions
 
 export const selectTodoList = (state: RootState) => state.todos.todoList;
 export default todosSlice.reducer
