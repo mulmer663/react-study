@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import styled from "styled-components";
 import {inAndOutTheme} from "./common/CommonStyle";
 import HeadBar from "./area/HeadBar";
@@ -6,8 +6,6 @@ import InputArea from "./area/InputArea";
 import TabArea from "./area/TabArea";
 import PageArea from "./area/PageArea";
 import MainArea from "./area/MainArea";
-import {ToDoProps} from "./component/ToDo";
-import {callbackify} from "node:util";
 
 const SToDoPage = styled.div`
     ${inAndOutTheme};

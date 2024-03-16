@@ -6,8 +6,8 @@ import ColorPalette from "../component/ColorPalette";
 import {useAppDispatch} from "../reducers/store";
 import {todoAdded} from "../reducers/todoReducer";
 import {ToDoProps} from "../component/ToDo";
-import { v4 } from 'uuid';
-import {text} from "node:stream/consumers";
+import {v4} from 'uuid';
+import {plusTotalCount} from "../reducers/pagingReducer";
 
 
 const SInputArea = styled.div<gridArea>`
@@ -91,15 +91,21 @@ const InputArea = ({$gridArea}: gridArea) => {
     };
 
     const _onClickEvent = (text: string, color: string) => {
+        if (!text) {
+            alert("할 일을 입력해 주세요.");
+            return
+        }
+
         const newTodo: ToDoProps = {
             id: v4(),
-            giveText: text,
+            text: text,
             $color: color,
             $isFocus: false,
             $isFinish: false,
             isDeleted: false,
         }
-        dispatch(todoAdded(newTodo))
+        dispatch(todoAdded(newTodo));
+        dispatch(plusTotalCount(1));
         setInputValue('');
         setColor('#f29b76')
     }
@@ -112,8 +118,8 @@ const InputArea = ({$gridArea}: gridArea) => {
                 && _onClickEvent(inputValue, color)} value={inputValue}/>
             <SAddButton onClick={() => _onClickEvent(inputValue, color)}>ADD</SAddButton>
             <SWrap>
-                <ColorPalette $paddingLeft={"0px"} $boxShadowColor={"#3d3d3d"} givenColor={color}
-                            callback={setColor}/>
+                <ColorPalette $paddingLeft={"0px"} $boxShadowColor={"#3d3d3d"} $color={color}
+                              eventCallBack={setColor}/>
             </SWrap>
         </SInputArea>
     );

@@ -49,12 +49,12 @@ export const highLightTheme = css`
 `;
 
 interface direction {
-    direction: string
+    $direction: string
 }
 
 export const SFlexBox = styled.div<direction>`
     display: flex;
-    flex-direction: ${(props) => props.direction};
+    flex-direction: ${(props) => props.$direction};
     align-items: center;
     justify-content: space-between;
 `;

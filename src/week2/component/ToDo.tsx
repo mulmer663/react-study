@@ -1,12 +1,20 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, useTransition} from "react";
 import styled from "styled-components";
 import {flexAlign, inAndOutTheme, mainFont, SFlexBox} from "../common/CommonStyle";
 import CheckBox from "./Checkbox";
 import {FaXmark} from "react-icons/fa6";
 import ColorPalette from "./ColorPalette";
-import {useAppDispatch} from "../reducers/store";
-import {todoDeleted, todoDeleteReady, todoFocus, todoToggled} from "../reducers/todoReducer";
-import {log} from "node:util";
+import {useAppDispatch, useAppSelector} from "../reducers/store";
+import {
+    selectTodoList,
+    todoDeleted,
+    todoDeleteReady,
+    todoFocus,
+    todoToggled,
+    todoUpdateColor,
+    todoUpdateText
+} from "../reducers/todoReducer";
+import {plusTotalCount} from "../reducers/pagingReducer";
 
 interface SToDoProps {
     $isFocus: boolean,
@@ -111,40 +119,46 @@ const SXMark = styled.div<{ $isDeleted: boolean }>`
     ${flexAlign};
 `;
 
-const makeCurrentDate = () => {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-}
-
 export interface ToDoProps extends SToDoProps, SColorBarProps, STextProps {
     id: string
-    giveText: string,
+    text: string,
     endDate?: string,
     isDeleted: boolean
 }
 
-const ToDo = ({$isFocus, $color, $isFinish, id, giveText, endDate, isDeleted}: ToDoProps) => {
-    const [text, setText] = useState(giveText);
-    const [color, setColor] = useState($color);
-    const startDate = makeCurrentDate();
-    const dispatch = useAppDispatch();
+const EMPTY_TODO: ToDoProps = {
+    $color: "#f29b76", $isFinish: false, $isFocus: false, isDeleted: false, id: '', text: ''
+}
 
-    const handleInputChange = (value: string) => {
-        setText(value);
+const useTodo = (id: string) => {
+    const todoList = useAppSelector(selectTodoList);
+    const todo = todoList.find(todo => todo.id === id);
+    if (todo) {
+        return todo;
+    }
+    return EMPTY_TODO;
+}
+
+const ToDo = ({id}: { id: string }) => {
+    const {text, endDate, isDeleted, $isFocus, $color, $isFinish} = useTodo(id);
+    const dispatch = useAppDispatch();
+    const [, startTransition] = useTransition();
+    const onChange = (event: ChangeEvent<HTMLInputElement>) => startTransition(() => handleInputChange(event.target.value));
+
+    const startDate = makeCurrentDate();
+
+    const handleInputChange = (text: string) => {
+        dispatch(todoUpdateText({id, text}))
     };
 
     const checkBoxClickEvent = () => {
-        let _endDate;
+        let newEndDate;
         if ($isFinish) {
-            _endDate = ""
+            newEndDate = ""
         } else {
-            _endDate = makeCurrentDate();
+            newEndDate = makeCurrentDate();
         }
-        dispatch(todoToggled({id, _endDate}));
+        dispatch(todoToggled({id, newEndDate}));
     }
 
     const focusClickEvent = () => {
@@ -167,40 +181,54 @@ const ToDo = ({$isFocus, $color, $isFinish, id, giveText, endDate, isDeleted}: T
     }
     const deleteClickEvent = () => {
         dispatch(todoDeleted(id));
+        dispatch(plusTotalCount(-1));
+    }
+
+    const colorClickEvent = (color: string) => {
+        dispatch(todoUpdateColor({id, color}));
     }
 
     return (
         <SToDo $isFocus={$isFocus}>
             {/* 포커스면 컬러 팔레트 표시 */}
-            {$isFocus && <ColorPalette givenColor={color} callback={setColor}/>}
-            <SFlexBox direction={"row"} onClick={focusClickEvent}>
-                <SColorBar $color={color}/>
+            {$isFocus && <ColorPalette $color={$color} eventCallBack={colorClickEvent}/>}
+            <SFlexBox $direction={"row"} onClick={focusClickEvent}>
+                <SColorBar $color={$color}/>
                 {$isFocus ?
                     <SInput $isFinish={$isFinish} value={text} onClick={(event) => event.stopPropagation()}
-                            onChange={(e) => handleInputChange(e.target.value)}
+                            onChange={onChange}
                             onKeyDown={(event) => focusKeyEvent(event)}
                     />
                     :
                     <SText $isFinish={$isFinish}>{text}</SText>
                 }
-                <SButtonGroup direction={"column"}>
-                    <CheckBox eventCallBack={() => checkBoxClickEvent()}/>
-                    {isDeleted ? <SXMark onClick={(event) => {
+                <SButtonGroup $direction={"column"}>
+                    <CheckBox eventCallBack={() => checkBoxClickEvent()} $isFinish={$isFinish}/>
+                    {isDeleted
+                        ? <SXMark onClick={(event) => {
                             event.stopPropagation();
                             deleteClickEvent();
-                        }}
-                                         $isDeleted={isDeleted}><FaXmark size="25" color="#ff4d4d"/></SXMark> :
-                        <SXMark onClick={(event) => deleteReadyEvent(event)}
-                                $isDeleted={isDeleted}><FaXmark size="20" color="#1b1f2b"/></SXMark>}
+                        }} $isDeleted={isDeleted}><FaXmark size="25" color="#ff4d4d"/></SXMark>
+                        : <SXMark onClick={(event) => deleteReadyEvent(event)}
+                                  $isDeleted={isDeleted}><FaXmark size="20" color="#1b1f2b"/></SXMark>}
                 </SButtonGroup>
             </SFlexBox>
             {/* 포커스면 시작일 완료일 표시 */}
-            {$isFocus && <SDateGroup direction={"row"}>
+            {$isFocus && <SDateGroup $direction={"row"}>
                 <SDiv>입력일: {startDate}</SDiv>
                 <SDiv>완료일: {endDate ? endDate : "-"}</SDiv>
             </SDateGroup>}
         </SToDo>
     );
+}
+
+const makeCurrentDate = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
 }
 
 export default ToDo

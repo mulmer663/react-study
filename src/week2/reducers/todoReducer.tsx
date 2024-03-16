@@ -11,38 +11,58 @@ const todosSlice = createSlice({
     initialState,
     reducers: {
         todoAdded(state, action) {
-            state.todoList.unshift(action.payload)
+            state.todoList.unshift(action.payload);
         },
-        todoToggled(state, action: PayloadAction<{ id: string, _endDate: string }>) {
-            state.todoList = state.todoList.map((todo) => {
-                return todo.id === action.payload.id
-                    ? {...todo, $isFinish: !todo.$isFinish, endDate: action.payload._endDate, isDeleted: false}
-                    : todo
-            })
+        todoToggled(state, action: PayloadAction<{ id: string, newEndDate: string }>) {
+            const todo = state.todoList.find(todo => todo.id == action.payload.id);
+            if (todo) {
+                todo.$isFinish = !todo.$isFinish;
+                todo.endDate = action.payload.newEndDate;
+                todo.isDeleted = false;
+            }
         },
         todoFocus(state, action) {
-            state.todoList = state.todoList.map((todo) => {
-                return todo.id === action.payload
-                    ? {...todo, $isFocus: !todo.$isFocus, isDeleted: todo.isDeleted && !todo.$isFocus}
-                    : {...todo, $isFocus: false, isDeleted: false}
+            state.todoList.map((todo) => {
+                if (todo.id === action.payload) {
+                    todo.$isFocus = !todo.$isFocus;
+                    todo.isDeleted = todo.isDeleted && todo.$isFocus;
+                } else {
+                    todo.$isFocus = false;
+                    todo.isDeleted = false;
+                }
             })
+        },
+        todoUpdateColor(state, action: PayloadAction<{ id: string, color: string }>) {
+            const todo = state.todoList.find(todo => todo.id == action.payload.id);
+            if (todo) {
+                todo.$color = action.payload.color
+            }
+        },
+        todoUpdateText(state, action: PayloadAction<{ id: string, text: string }>) {
+            const todo = state.todoList.find(todo => todo.id == action.payload.id);
+            if (todo) {
+                todo.text = action.payload.text
+            }
         },
         todoDeleteReady(state, action) {
-            state.todoList = state.todoList.map((todo) => {
-                return todo.id === action.payload
-                    ? {...todo, isDeleted: true}
-                    : todo
-            })
+            const todo = state.todoList.find(todo => todo.id == action.payload);
+            if (todo) {
+                todo.isDeleted = true
+            }
         },
         todoDeleted(state, action) {
-            state.todoList = state.todoList.filter(todo => todo.id !== action.payload);
+            const index = state.todoList.findIndex(todo => todo.id === action.payload);
+            if (index !== -1) {
+                state.todoList.splice(index, 1);
+            }
         }
     }
 })
 
 export const {
     todoAdded, todoToggled, todoFocus,
-    todoDeleteReady, todoDeleted
+    todoDeleteReady, todoDeleted, todoUpdateColor,
+    todoUpdateText
 } = todosSlice.actions
 
 export const selectTodoList = (state: RootState) => state.todos.todoList;

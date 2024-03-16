@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import styled from "styled-components";
 
 const COLOR_LIST = [
@@ -59,9 +59,9 @@ const SColor = styled.div<SColorProps>`
 
 interface ColorPaletteProps extends SColorPaletteProps {
     $boxShadowColor?: string
-    givenColor: string
+    $color: string
 
-    callback(color: string): void
+    eventCallBack(color: string): void
 }
 
 /*
@@ -69,9 +69,9 @@ interface ColorPaletteProps extends SColorPaletteProps {
 * 클릭 이벤트시 리스트의 isSelected 값을 변경
 * 그리고 부모에게 상태 변경되었다고 함수를 호출함
 * */
-const ColorPalette = ({$paddingLeft, $boxShadowColor, givenColor, callback}: ColorPaletteProps) => {
+const ColorPalette = ({$paddingLeft, $boxShadowColor, $color, eventCallBack}: ColorPaletteProps) => {
     const handleClickEvent = (color: string) => {
-        callback(color);
+        eventCallBack(color);
     }
 
     return (
@@ -79,7 +79,7 @@ const ColorPalette = ({$paddingLeft, $boxShadowColor, givenColor, callback}: Col
             {COLOR_LIST.map((it, index) =>
                 <SColor key={index}
                         $color={it.color}
-                        $isSelected={it.color === givenColor}
+                        $isSelected={it.color === $color}
                         $boxShadowColor={$boxShadowColor}
                         onClick={() => handleClickEvent(it.color)}/>
             )}

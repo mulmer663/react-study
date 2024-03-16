@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import {gridArea} from "../common/CommonProps";
+import {filterCondition, gridArea, Paging} from "../common/CommonProps";
 import {mainTheme} from "../common/CommonStyle";
 import ToDo from "../component/ToDo";
 import {useAppSelector} from "../reducers/store";
 import {selectTodoList} from "../reducers/todoReducer";
+import {selectPaging} from "../reducers/pagingReducer";
 
 const SMainArea = styled.div<gridArea>`
     grid-area: ${(props) => (props.$gridArea)};
@@ -18,17 +19,32 @@ const SMainArea = styled.div<gridArea>`
     padding: 20px;
 `;
 
-const MainArea = ({$gridArea}: gridArea) => {
+// 인덱스 처리되고 필터링 된 Todo 리스트 반환
+const useTodoList = () => {
     const todoList = useAppSelector(selectTodoList);
+    const paging = useAppSelector(selectPaging);
+    const {startIndex, endIndex} = calculateIndices(paging);
+    return todoList.filter(filterCondition[paging.filter])
+        .slice(startIndex, endIndex);
+}
+
+const MainArea = ({$gridArea}: gridArea) => {
+    const todoList = useTodoList();
 
     return (
         <SMainArea $gridArea={$gridArea}>
             {todoList.map((it) =>
-                <ToDo key={it.id} giveText={it.giveText} $isFocus={it.$isFocus} $color={it.$color}
-                      $isFinish={it.$isFinish} endDate={it.endDate} id={it.id} isDeleted={it.isDeleted}/>
+                <ToDo key={it.id} id={it.id}/>
             )}
         </SMainArea>
     );
+}
+
+const calculateIndices = ({currentPage, totalCount, ROWS}: Paging) => {
+    const startIndex = (currentPage - 1) * ROWS;
+    const endIndex = Math.min(startIndex + ROWS, totalCount);
+
+    return {startIndex, endIndex};
 }
 
 export default MainArea;

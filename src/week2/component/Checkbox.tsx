@@ -7,6 +7,7 @@ const SInput = styled.input.attrs({type: "checkbox"})`
     display: none;
 
     // 체크되었을 때 테투리 설정 
+
     &:checked + .checkbox_icon {
         border-color: #56657c;
         background-color: #56657c;
@@ -14,12 +15,14 @@ const SInput = styled.input.attrs({type: "checkbox"})`
     }
 
     // 체크되었을 때 가상요소 before
+
     &:checked + .checkbox_icon::before {
         height: 10px; // 높이값 지정
         transition: all 0.15s ease; // 0.15초 변화시간 줌
     }
 
     // 체크되었을 때 가상요소 after
+
     &:checked + .checkbox_icon::after {
         height: 20px; // 높이값 지정
         transition: all 0.15s ease 0.15s; // 0.15초 변화시간 + 딜레이 시간 줌
@@ -50,6 +53,7 @@ const SCheckBox_Icon = styled.span`
     }
 
     // 가상요소 before
+
     &:before {
         top: 11px; // 위치값 top
         left: 1px; // 위치값 left
@@ -57,6 +61,7 @@ const SCheckBox_Icon = styled.span`
     }
 
     // 가상요소 after 
+
     &:after {
         top: 18px; // 위치값 top
         left: 8px; // 위치값 left
@@ -65,14 +70,16 @@ const SCheckBox_Icon = styled.span`
 `;
 
 interface CheckBoxProps {
-    eventCallBack() : void
+    $isFinish: boolean,
+
+    eventCallBack(): void
 }
 
-const CheckBox = ({eventCallBack} : CheckBoxProps) => {
+const CheckBox = ({$isFinish, eventCallBack}: CheckBoxProps) => {
 
     return (
         <SLabel>
-            <SInput type="checkbox"/>
+            <SInput type="checkbox" defaultChecked={$isFinish}/>
             <SCheckBox_Icon className="checkbox_icon" onClick={eventCallBack}/>
         </SLabel>
     );
